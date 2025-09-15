@@ -1,50 +1,150 @@
-# Welcome to your Expo app 👋
+# 🍓 CanIEat - Pregnancy Food Safety Guide
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+**CanIEat** is an AI-powered mobile application designed specifically for pregnant women to check food safety based on official UK government medical guidelines.
 
-## Get started
+## 📱 Features
 
-1. Install dependencies
+- **Instant Food Safety Checks**: Get immediate guidance on whether specific foods are safe during pregnancy
+- **UK Government Guidelines**: All recommendations based on official NHS, FSA, and UK government medical advice
+- **AI-Powered Analysis**: Advanced language models trained on medical literature provide accurate, up-to-date information
+- **User-Friendly Interface**: Simple search interface with clear, actionable results
+- **Comprehensive Information**: Detailed explanations and additional safety tips
 
+## 🛡️ Medical Disclaimer
+
+This app provides general guidance only and is not a substitute for professional medical advice. Always consult your healthcare provider, midwife, or doctor for personalized medical advice during pregnancy.
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or later)
+- npm or yarn
+- Expo CLI
+- OpenAI API key
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/olgagorskikh/canieat.git
+   cd canieat
+   ```
+
+2. **Install dependencies**
    ```bash
    npm install
    ```
 
-2. Start the app
-
+3. **Set up environment variables**
    ```bash
-    npx expo start
+   cp .env.example .env
+   # Edit .env and add your OpenAI API key
    ```
 
-In the output, you'll find options to open the app in a
+4. **Start the development server**
+   ```bash
+   npm start
+   ```
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+5. **Run on your device**
+   - Install Expo Go on your iPhone/Android
+   - Scan the QR code from the terminal
+   - Your app will load on your device
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+## 📱 Testing on iPhone
 
-## Get a fresh project
+1. **Install Expo Go** from the App Store
+2. **Run `npm start`** in your project directory
+3. **Scan the QR code** with your iPhone camera
+4. **Open in Expo Go** when prompted
 
-When you're ready, run:
+## 🏗️ Building for Production
 
-```bash
-npm run reset-project
+### iOS App Store
+
+1. **Configure EAS**
+   ```bash
+   eas build:configure
+   ```
+
+2. **Build for iOS**
+   ```bash
+   eas build --platform ios --profile production
+   ```
+
+3. **Submit to App Store**
+   ```bash
+   eas submit --platform ios
+   ```
+
+## 📋 Project Structure
+
+```
+canieat/
+├── app/                    # App screens and navigation
+│   ├── (tabs)/            # Tab-based navigation
+│   │   ├── index.tsx      # Main search screen
+│   │   └── about.tsx      # About and information screen
+│   └── _layout.tsx        # Root layout
+├── services/              # API services
+│   └── openaiService.ts   # OpenAI integration
+├── assets/               # Images and icons
+├── app.json             # Expo configuration
+└── package.json         # Dependencies
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## 🔧 Configuration
 
-## Learn more
+### Environment Variables
 
-To learn more about developing your project with Expo, look at the following resources:
+Create a `.env` file in the root directory:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```env
+EXPO_PUBLIC_OPENAI_API_KEY=your_openai_api_key_here
+```
 
-## Join the community
+### App Configuration
 
-Join our community of developers creating universal apps.
+Key settings in `app.json`:
+- **Bundle Identifier**: `com.grsdev.canieat`
+- **App Name**: CanIEat
+- **Version**: 1.0.0
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## 📚 Official Sources
+
+All recommendations are based on:
+- [NHS Pregnancy Guidelines](https://www.nhs.uk/pregnancy/keeping-well/foods-to-avoid/)
+- [UK Government Medical Advice](https://www.gov.uk/government/publications/advice-on-eating-fish-when-trying-to-get-pregnant-or-pregnant-and-breastfeeding)
+- [Food Standards Agency Guidelines](https://www.food.gov.uk/safety-hygiene/food-safety-and-pregnancy)
+- [Royal College of Obstetricians and Gynaecologists](https://www.rcog.org.uk/)
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 👩‍💻 Developer
+
+**Olga Gorskikh** - [@olgagorskikh](https://github.com/olgagorskikh)
+
+## 🙏 Acknowledgments
+
+- UK Government medical guidelines
+- NHS pregnancy advice
+- Food Standards Agency
+- OpenAI for AI capabilities
+- Expo team for the amazing framework
+
+---
+
+**Made with ❤️ for expecting mothers**
+
+*Always prioritize your health and consult healthcare professionals*

@@ -1,23 +1,34 @@
 {
   "expo": {
-    "name": "CanIeat",
-    "slug": "CanIeat",
+    "name": "CanIEat",
+    "slug": "canieat",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "canieat",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "description": "AI-powered food safety guide for pregnant women based on UK government medical guidelines",
+    "keywords": ["pregnancy", "food safety", "health", "nutrition", "AI", "medical advice", "UK guidelines"],
+    "privacy": "public",
+    "platforms": ["ios", "android"],
+    "githubUrl": "https://github.com/olgagorskikh/canieat",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.grsdev.canieat"
+      "bundleIdentifier": "com.grsdev.canieat",
+      "buildNumber": "1",
+      "infoPlist": {
+        "NSHealthShareUsageDescription": "This app provides food safety guidance for pregnant women based on UK medical guidelines.",
+        "NSHealthUpdateUsageDescription": "This app provides food safety guidance for pregnant women based on UK medical guidelines."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.grsdev.canieat"
+      "package": "com.grsdev.canieat",
+      "versionCode": 1
     },
     "web": {
       "bundler": "metro",

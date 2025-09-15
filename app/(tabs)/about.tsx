@@ -47,6 +47,13 @@ export default function AboutScreen() {
           
           <TouchableOpacity 
             style={styles.linkButton}
+            onPress={() => openLink('https://www.nhs.uk/pregnancy/keeping-well/healthy-diet/')}
+          >
+            <Text style={styles.linkText}>NHS - Healthy Diet in Pregnancy</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity 
+            style={styles.linkButton}
             onPress={() => openLink('https://www.gov.uk/government/publications/advice-on-eating-fish-when-trying-to-get-pregnant-or-pregnant-and-breastfeeding')}
           >
             <Text style={styles.linkText}>UK Government - Fish Consumption Advice</Text>
@@ -57,6 +64,13 @@ export default function AboutScreen() {
             onPress={() => openLink('https://www.food.gov.uk/safety-hygiene/food-safety-and-pregnancy')}
           >
             <Text style={styles.linkText}>Food Standards Agency - Pregnancy Safety</Text>
+          </TouchableOpacity>
+          
+          <TouchableOpacity 
+            style={styles.linkButton}
+            onPress={() => openLink('https://www.rcog.org.uk/for-the-public/browse-all-patient-information-leaflets/healthy-eating-and-vitamin-supplements-in-pregnancy/')}
+          >
+            <Text style={styles.linkText}>RCOG - Healthy Eating in Pregnancy</Text>
           </TouchableOpacity>
         </View>
 
