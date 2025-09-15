@@ -32,7 +32,6 @@ export default function AboutScreen() {
             <Text style={styles.sourceItem}>• NHS Foods to Avoid in Pregnancy</Text>
             <Text style={styles.sourceItem}>• NHS Vitamins and Nutrition Guidelines</Text>
             <Text style={styles.sourceItem}>• NHS Keeping Well During Pregnancy</Text>
-            <Text style={styles.sourceItem}>• NHS Pregnancy Health Guidelines</Text>
           </View>
         </View>
 
