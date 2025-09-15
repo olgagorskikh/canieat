@@ -47,20 +47,6 @@ export default function AboutScreen() {
           
           <TouchableOpacity 
             style={styles.linkButton}
-            onPress={() => openLink('https://www.nhs.uk/pregnancy/keeping-well/healthy-diet/')}
-          >
-            <Text style={styles.linkText}>NHS - Healthy Diet in Pregnancy</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={styles.linkButton}
-            onPress={() => openLink('https://www.nhs.uk/pregnancy/keeping-well/foods-to-avoid-in-pregnancy/')}
-          >
-            <Text style={styles.linkText}>NHS - Foods to Avoid in Pregnancy</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity 
-            style={styles.linkButton}
             onPress={() => openLink('https://www.nhs.uk/pregnancy/keeping-well/vitamins-supplements-and-nutrition/')}
           >
             <Text style={styles.linkText}>NHS - Vitamins and Nutrition in Pregnancy</Text>
