@@ -26,13 +26,13 @@ export default function AboutScreen() {
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>🛡️ Our Sources</Text>
           <Text style={styles.sectionText}>
-            All recommendations are based on official UK government medical guidelines, including:
+            All recommendations are based on official NHS medical guidelines, including:
           </Text>
           <View style={styles.sourceList}>
-            <Text style={styles.sourceItem}>• NHS Pregnancy Guidelines</Text>
-            <Text style={styles.sourceItem}>• UK Government Medical Advice</Text>
-            <Text style={styles.sourceItem}>• Royal College of Obstetricians and Gynaecologists</Text>
-            <Text style={styles.sourceItem}>• Food Standards Agency (FSA) Guidelines</Text>
+            <Text style={styles.sourceItem}>• NHS Foods to Avoid in Pregnancy</Text>
+            <Text style={styles.sourceItem}>• NHS Vitamins and Nutrition Guidelines</Text>
+            <Text style={styles.sourceItem}>• NHS Keeping Well During Pregnancy</Text>
+            <Text style={styles.sourceItem}>• NHS Pregnancy Health Guidelines</Text>
           </View>
         </View>
 
