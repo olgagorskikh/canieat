@@ -54,23 +54,23 @@ export default function AboutScreen() {
           
           <TouchableOpacity 
             style={styles.linkButton}
-            onPress={() => openLink('https://www.gov.uk/government/publications/advice-on-eating-fish-when-trying-to-get-pregnant-or-pregnant-and-breastfeeding')}
+            onPress={() => openLink('https://www.nhs.uk/pregnancy/keeping-well/foods-to-avoid-in-pregnancy/')}
           >
-            <Text style={styles.linkText}>UK Government - Fish Consumption Advice</Text>
+            <Text style={styles.linkText}>NHS - Foods to Avoid in Pregnancy</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
             style={styles.linkButton}
-            onPress={() => openLink('https://www.food.gov.uk/safety-hygiene/food-safety-and-pregnancy')}
+            onPress={() => openLink('https://www.nhs.uk/pregnancy/keeping-well/vitamins-supplements-and-nutrition/')}
           >
-            <Text style={styles.linkText}>Food Standards Agency - Pregnancy Safety</Text>
+            <Text style={styles.linkText}>NHS - Vitamins and Nutrition in Pregnancy</Text>
           </TouchableOpacity>
           
           <TouchableOpacity 
             style={styles.linkButton}
-            onPress={() => openLink('https://www.rcog.org.uk/for-the-public/browse-all-patient-information-leaflets/healthy-eating-and-vitamin-supplements-in-pregnancy/')}
+            onPress={() => openLink('https://www.nhs.uk/pregnancy/keeping-well/')}
           >
-            <Text style={styles.linkText}>RCOG - Healthy Eating in Pregnancy</Text>
+            <Text style={styles.linkText}>NHS - Keeping Well During Pregnancy</Text>
           </TouchableOpacity>
         </View>
 
