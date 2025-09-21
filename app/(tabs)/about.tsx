@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native';
+import { SubscriptionStatus } from '../../components/SubscriptionStatus';
 
 export default function AboutScreen() {
   const openLink = (url: string) => {
@@ -14,6 +15,7 @@ export default function AboutScreen() {
       </View>
 
       <View style={styles.content}>
+        <SubscriptionStatus />
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>📋 What is CanIEat?</Text>
           <Text style={styles.sectionText}>
@@ -53,7 +55,7 @@ export default function AboutScreen() {
           
           <TouchableOpacity 
             style={styles.linkButton}
-            onPress={() => openLink('https://www.nhs.uk/pregnancy/keeping-well/')}
+            onPress={() => openLink('')}
           >
             <Text style={styles.linkText}>NHS - Keeping Well During Pregnancy</Text>
           </TouchableOpacity>

@@ -10,6 +10,7 @@ export interface FoodSafetyResponse {
   additionalInfo?: string;
 }
 
+
 export async function checkFoodSafety(foodItem: string): Promise<FoodSafetyResponse> {
   if (!process.env.EXPO_PUBLIC_OPENAI_API_KEY) {
     return {
