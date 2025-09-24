@@ -1,311 +1,177 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Modal,
-  TouchableOpacity,
-  ScrollView,
-  ActivityIndicator,
-  Alert,
-} from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Modal, ActivityIndicator, ScrollView } from 'react-native';
 import { useSubscription } from '../contexts/SubscriptionContext';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
 interface SubscriptionModalProps {
-  visible: boolean;
+  isVisible: boolean;
   onClose: () => void;
-  onSuccess?: () => void;
 }
 
-export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({
-  visible,
-  onClose,
-  onSuccess,
-}) => {
-  const { products, purchaseSubscription, restorePurchases, isLoading } = useSubscription();
-  const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
+export const SubscriptionModal: React.FC<SubscriptionModalProps> = ({ isVisible, onClose }) => {
+  const { products, purchaseSubscription, loading, error, isPremium } = useSubscription();
 
   const handlePurchase = async (productId: string) => {
-    setSelectedProduct(productId);
-    try {
-      const success = await purchaseSubscription(productId);
-      if (success) {
-        Alert.alert(
-          'Success!',
-          'Your subscription has been activated. Enjoy unlimited access to CanIEat!',
-          [
-            {
-              text: 'OK',
-              onPress: () => {
-                onSuccess?.();
-                onClose();
-              },
-            },
-          ]
-        );
-      } else {
-        Alert.alert('Error', 'Failed to purchase subscription. Please try again.');
-      }
-    } catch (error) {
-      Alert.alert('Error', 'An error occurred during purchase. Please try again.');
-    } finally {
-      setSelectedProduct(null);
+    if (isPremium) {
+      onClose();
+      return;
     }
-  };
-
-  const handleRestore = async () => {
-    try {
-      const success = await restorePurchases();
-      if (success) {
-        Alert.alert('Success!', 'Your purchases have been restored.');
-        onSuccess?.();
-        onClose();
-      } else {
-        Alert.alert('No Purchases', 'No previous purchases found to restore.');
-      }
-    } catch (error) {
-      Alert.alert('Error', 'Failed to restore purchases. Please try again.');
+    const success = await purchaseSubscription(productId);
+    if (success) {
+      onClose();
     }
-  };
-
-  const getProductDisplayName = (productId: string) => {
-    if (productId.includes('monthly')) return 'Monthly';
-    if (productId.includes('annual')) return 'Annual';
-    return 'Premium';
-  };
-
-  const getProductDescription = (productId: string) => {
-    if (productId.includes('monthly')) return 'Perfect for trying out premium features';
-    if (productId.includes('annual')) return 'Best value - Save 50% compared to monthly';
-    return 'Unlock all premium features';
   };
 
   return (
     <Modal
-      visible={visible}
       animationType="slide"
-      presentationStyle="pageSheet"
+      transparent={true}
+      visible={isVisible}
       onRequestClose={onClose}
     >
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-            <Ionicons name="close" size={24} color="#6a4c93" />
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <TouchableOpacity style={styles.closeButton} onPress={onClose}>
+            <Ionicons name="close-circle" size={30} color="#6a4c93" />
           </TouchableOpacity>
-          <Text style={styles.title}>🍓 CanIEat Premium</Text>
-          <Text style={styles.subtitle}>Unlock unlimited food safety guidance</Text>
-        </View>
 
-        <ScrollView style={styles.content} showsVerticalScrollIndicator={false}>
-          <View style={styles.benefitsSection}>
-            <Text style={styles.benefitsTitle}>Premium Features:</Text>
-            <View style={styles.benefitItem}>
-              <Ionicons name="checkmark-circle" size={20} color="#4CAF50" />
-              <Text style={styles.benefitText}>Unlimited food safety queries</Text>
-            </View>
-            <View style={styles.benefitItem}>
-              <Ionicons name="checkmark-circle" size={20} color="#4CAF50" />
-              <Text style={styles.benefitText}>Advanced nutrition analysis</Text>
-            </View>
-            <View style={styles.benefitItem}>
-              <Ionicons name="checkmark-circle" size={20} color="#4CAF50" />
-              <Text style={styles.benefitText}>Personalized recommendations</Text>
-            </View>
-            <View style={styles.benefitItem}>
-              <Ionicons name="checkmark-circle" size={20} color="#4CAF50" />
-              <Text style={styles.benefitText}>Priority customer support</Text>
-            </View>
-            <View style={styles.benefitItem}>
-              <Ionicons name="checkmark-circle" size={20} color="#4CAF50" />
-              <Text style={styles.benefitText}>Ad-free experience</Text>
-            </View>
-          </View>
-
-          <View style={styles.trialSection}>
-            <View style={styles.trialBadge}>
-              <Text style={styles.trialText}>7-Day Free Trial</Text>
-            </View>
-            <Text style={styles.trialDescription}>
-              Start your free trial today. Cancel anytime during the trial period with no charges.
+          <ScrollView contentContainerStyle={styles.scrollContent}>
+            <Text style={styles.modalTitle}>Unlock Premium Features</Text>
+            <Text style={styles.modalSubtitle}>
+              Get unlimited access to detailed food analysis, personalized recommendations, and more!
             </Text>
-          </View>
 
-          <View style={styles.productsSection}>
-            {products.map((product) => (
+            {loading && (
+              <View style={styles.loadingContainer}>
+                <ActivityIndicator size="large" color="#6a4c93" />
+                <Text style={styles.loadingText}>Loading plans...</Text>
+              </View>
+            )}
+
+            {error && <Text style={styles.errorText}>{error}</Text>}
+
+            {!loading && products.length === 0 && (
+              <Text style={styles.noProductsText}>No subscription products available. Please try again later.</Text>
+            )}
+
+            {!loading && products.length > 0 && products.map((product) => (
               <TouchableOpacity
                 key={product.productId}
-                style={[
-                  styles.productCard,
-                  product.productId.includes('annual') && styles.recommendedCard,
-                ]}
+                style={styles.productCard}
                 onPress={() => handlePurchase(product.productId)}
-                disabled={isLoading}
+                disabled={loading || isPremium}
               >
-                {product.productId.includes('annual') && (
-                  <View style={styles.recommendedBadge}>
-                    <Text style={styles.recommendedText}>BEST VALUE</Text>
-                  </View>
-                )}
-                
                 <View style={styles.productHeader}>
-                  <Text style={styles.productName}>
-                    {getProductDisplayName(product.productId)}
-                  </Text>
+                  <Text style={styles.productTitle}>{product.title}</Text>
                   <Text style={styles.productPrice}>{product.price}</Text>
                 </View>
-                
-                <Text style={styles.productDescription}>
-                  {getProductDescription(product.productId)}
-                </Text>
-                
-                {selectedProduct === product.productId && (
-                  <ActivityIndicator size="small" color="#6a4c93" style={styles.loading} />
+                <Text style={styles.productDescription}>{product.description}</Text>
+                {product.productId === 'com.grsdev.canieat.subscription.annual' && (
+                  <View style={styles.badge}>
+                    <Text style={styles.badgeText}>BEST VALUE</Text>
+                  </View>
                 )}
               </TouchableOpacity>
             ))}
-          </View>
 
-          <View style={styles.footerSection}>
+            <Text style={styles.trialInfo}>
+              Enjoy a 7-day free trial with any subscription! Cancel anytime.
+            </Text>
+
             <TouchableOpacity
               style={styles.restoreButton}
-              onPress={handleRestore}
-              disabled={isLoading}
+              onPress={() => useSubscription().restorePurchases()}
+              disabled={loading}
             >
               <Text style={styles.restoreButtonText}>Restore Purchases</Text>
             </TouchableOpacity>
-            
+
             <Text style={styles.disclaimerText}>
-              Subscriptions automatically renew unless auto-renew is turned off at least 24 hours before the end of the current period. 
-              Your account will be charged for renewal within 24 hours prior to the end of the current period.
+              Subscriptions are managed through your App Store/Google Play account.
             </Text>
-          </View>
-        </ScrollView>
+          </ScrollView>
+        </View>
       </View>
     </Modal>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
+  centeredView: {
     flex: 1,
-    backgroundColor: '#f8f9fa',
-  },
-  header: {
-    backgroundColor: '#fff',
-    paddingTop: 60,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e9ecef',
+    justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalView: {
+    width: '90%',
+    maxHeight: '80%',
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 25,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
   },
   closeButton: {
     position: 'absolute',
-    top: 60,
-    right: 20,
-    padding: 8,
+    top: 15,
+    right: 15,
+    zIndex: 1,
   },
-  title: {
-    fontSize: 28,
+  scrollContent: {
+    alignItems: 'center',
+    paddingBottom: 20,
+  },
+  modalTitle: {
+    fontSize: 26,
     fontWeight: 'bold',
     color: '#2c3e50',
-    marginBottom: 5,
+    marginBottom: 10,
+    textAlign: 'center',
   },
-  subtitle: {
+  modalSubtitle: {
     fontSize: 16,
     color: '#7f8c8d',
     textAlign: 'center',
+    marginBottom: 25,
   },
-  content: {
-    flex: 1,
-    padding: 20,
-  },
-  benefitsSection: {
-    backgroundColor: '#fff',
-    padding: 20,
-    borderRadius: 12,
-    marginBottom: 20,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  benefitsTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#2c3e50',
-    marginBottom: 15,
-  },
-  benefitItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
-  },
-  benefitText: {
-    fontSize: 15,
-    color: '#34495e',
-    marginLeft: 10,
-  },
-  trialSection: {
-    backgroundColor: '#e8f5e8',
-    padding: 20,
-    borderRadius: 12,
-    marginBottom: 20,
+  loadingContainer: {
+    paddingVertical: 30,
     alignItems: 'center',
   },
-  trialBadge: {
-    backgroundColor: '#4CAF50',
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
-    marginBottom: 10,
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#7f8c8d',
   },
-  trialText: {
-    color: '#fff',
-    fontSize: 14,
-    fontWeight: 'bold',
-  },
-  trialDescription: {
-    fontSize: 14,
-    color: '#2e7d32',
+  errorText: {
+    color: '#e74c3c',
     textAlign: 'center',
-    lineHeight: 20,
+    marginBottom: 15,
+    fontSize: 14,
   },
-  productsSection: {
-    marginBottom: 20,
+  noProductsText: {
+    fontSize: 16,
+    color: '#7f8c8d',
+    textAlign: 'center',
+    paddingVertical: 20,
   },
   productCard: {
-    backgroundColor: '#fff',
+    width: '100%',
+    backgroundColor: '#f0ebf7',
+    borderRadius: 15,
     padding: 20,
-    borderRadius: 12,
     marginBottom: 15,
     borderWidth: 2,
-    borderColor: '#e9ecef',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  recommendedCard: {
     borderColor: '#6a4c93',
-    borderWidth: 2,
-  },
-  recommendedBadge: {
-    position: 'absolute',
-    top: -10,
-    right: 20,
-    backgroundColor: '#6a4c93',
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 12,
-  },
-  recommendedText: {
-    color: '#fff',
-    fontSize: 12,
-    fontWeight: 'bold',
+    position: 'relative',
   },
   productHeader: {
     flexDirection: 'row',
@@ -313,10 +179,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 8,
   },
-  productName: {
+  productTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#2c3e50',
+    color: '#6a4c93',
   },
   productPrice: {
     fontSize: 20,
@@ -325,30 +191,46 @@ const styles = StyleSheet.create({
   },
   productDescription: {
     fontSize: 14,
-    color: '#7f8c8d',
+    color: '#34495e',
     lineHeight: 20,
   },
-  loading: {
+  badge: {
+    position: 'absolute',
+    top: -10,
+    right: -10,
+    backgroundColor: '#e74c3c',
+    borderRadius: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 10,
+  },
+  badgeText: {
+    color: '#ffffff',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  trialInfo: {
+    fontSize: 14,
+    color: '#7f8c8d',
+    textAlign: 'center',
     marginTop: 10,
-  },
-  footerSection: {
-    alignItems: 'center',
-    paddingBottom: 40,
-  },
-  restoreButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 24,
     marginBottom: 20,
   },
+  restoreButton: {
+    backgroundColor: '#9b59b6',
+    paddingVertical: 12,
+    paddingHorizontal: 25,
+    borderRadius: 10,
+    marginBottom: 15,
+  },
   restoreButtonText: {
-    color: '#6a4c93',
+    color: '#ffffff',
     fontSize: 16,
-    fontWeight: '500',
+    fontWeight: 'bold',
   },
   disclaimerText: {
     fontSize: 12,
-    color: '#7f8c8d',
+    color: '#95a5a6',
     textAlign: 'center',
-    lineHeight: 16,
+    marginTop: 10,
   },
 });

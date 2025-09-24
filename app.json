@@ -27,7 +27,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.grsdev.canieat",
-      "buildNumber": "17",
+      "buildNumber": "20",
       "infoPlist": {
         "NSHealthShareUsageDescription": "This app provides food safety guidance for pregnant women based on UK medical guidelines.",
         "NSHealthUpdateUsageDescription": "This app provides food safety guidance for pregnant women based on UK medical guidelines.",
@@ -40,7 +40,7 @@
         "backgroundColor": "#ffffff"
       },
       "package": "com.grsdev.canieat",
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "bundler": "metro",

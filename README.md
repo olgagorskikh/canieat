@@ -7,6 +7,7 @@
 - **Instant Food Safety Checks**: Get immediate guidance on whether specific foods are safe during pregnancy
 - **UK Government Guidelines**: All recommendations based on official NHS, FSA, and UK government medical advice
 - **AI-Powered Analysis**: Advanced language models trained on medical literature provide accurate, up-to-date information
+- **Premium Subscription**: Unlock detailed analysis, personalized recommendations, and advanced features
 - **User-Friendly Interface**: Simple search interface with clear, actionable results
 - **Comprehensive Information**: Detailed explanations and additional safety tips
 
@@ -75,8 +76,25 @@ This app provides general guidance only and is not a substitute for professional
 
 3. **Submit to App Store**
    ```bash
-   eas submit --platform ios
+   eas submit --platform ios --latest
    ```
+
+### Subscription Setup
+
+The app includes a premium subscription system with:
+- **Monthly Plan**: $4.99/month
+- **Annual Plan**: $49.99/year (Best Value)
+- **Product IDs**: 
+  - Monthly: `com.grsdev.canieat.subscription.monthly`
+  - Annual: `com.grsdev.canieat.subscription.annual`
+
+### App Store Connect Configuration
+
+Make sure to set up your subscriptions in App Store Connect:
+1. Go to **Features** → **Subscriptions**
+2. Create a **Subscription Group**
+3. Add your products with the exact Product IDs above
+4. Configure pricing and availability
 
 ## 📋 Project Structure
 
@@ -88,7 +106,14 @@ canieat/
 │   │   └── about.tsx      # About and information screen
 │   └── _layout.tsx        # Root layout
 ├── services/              # API services
-│   └── openaiService.ts   # OpenAI integration
+│   ├── openaiService.ts   # OpenAI integration
+│   └── subscriptionService.ts # Subscription management
+├── contexts/              # React contexts
+│   └── SubscriptionContext.tsx # Subscription state management
+├── components/            # Reusable components
+│   ├── SubscriptionModal.tsx
+│   ├── PremiumGate.tsx
+│   └── SubscriptionStatus.tsx
 ├── assets/               # Images and icons
 ├── app.json             # Expo configuration
 └── package.json         # Dependencies
