@@ -41,7 +41,6 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     refreshSubscriptionStatus();
-    
     return () => {
       subscriptionService.disconnect();
     };
@@ -74,7 +73,6 @@ export const SubscriptionProvider = ({ children }: { children: ReactNode }) => {
       return success;
     } catch (err) {
       console.error('Restore failed:', err);
-      setError('Restore purchases failed. Please try again.');
       return false;
     } finally {
       setLoading(false);

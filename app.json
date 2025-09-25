@@ -27,7 +27,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.grsdev.canieat",
-      "buildNumber": "20",
+      "buildNumber": "21",
       "infoPlist": {
         "NSHealthShareUsageDescription": "This app provides food safety guidance for pregnant women based on UK medical guidelines.",
         "NSHealthUpdateUsageDescription": "This app provides food safety guidance for pregnant women based on UK medical guidelines.",

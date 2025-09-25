@@ -1,43 +1,21 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator, Keyboard, ScrollView } from 'react-native';
-import { checkFoodSafety, FoodSafetyResponse } from '../../services/openaiService';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ScrollView } from 'react-native';
 import { PremiumGate } from '../../components/PremiumGate';
 import { useSubscription } from '../../contexts/SubscriptionContext';
 
 export default function SearchScreen() {
   const [searchText, setSearchText] = useState('');
-  const [result, setResult] = useState<FoodSafetyResponse | null>(null);
-  const [loading, setLoading] = useState(false);
+  const [result, setResult] = useState<string | null>(null);
   const { isPremium } = useSubscription();
 
-  const handleSearch = async () => {
+  const handleSearch = () => {
     if (!searchText.trim()) {
       Alert.alert('Please enter a food item to search');
       return;
     }
 
-    // Hide the keyboard when search is triggered
-    Keyboard.dismiss();
-
-    setLoading(true);
-    try {
-      const response = await checkFoodSafety(searchText.trim());
-      setResult(response);
-    } catch (error) {
-      Alert.alert('Error', 'Failed to check food safety. Please try again.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getResultColor = () => {
-    if (!result) return '#666';
-    return result.canEat ? '#4CAF50' : '#F44336';
-  };
-
-  const getResultIcon = () => {
-    if (!result) return '';
-    return result.canEat ? '✅' : '❌';
+    // Simple mock response for testing
+    setResult(`Mock result for: ${searchText}`);
   };
 
   return (
@@ -61,35 +39,14 @@ export default function SearchScreen() {
         <TouchableOpacity 
           style={styles.searchButton} 
           onPress={handleSearch}
-          disabled={loading}
         >
-          {loading ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text style={styles.searchButtonText}>Search</Text>
-          )}
+          <Text style={styles.searchButtonText}>Search</Text>
         </TouchableOpacity>
       </View>
 
       {result && (
         <View style={styles.resultContainer}>
-          <View style={[styles.resultHeader, { backgroundColor: getResultColor() }]}>
-            <Text style={styles.resultIcon}>{getResultIcon()}</Text>
-            <Text style={styles.resultTitle}>
-              {result.canEat ? 'SAFE TO EAT' : 'NOT RECOMMENDED'}
-            </Text>
-          </View>
-          
-          <View style={styles.resultContent}>
-            <Text style={styles.resultReason}>{result.reason}</Text>
-            
-            {result.additionalInfo && (
-              <View style={styles.additionalInfo}>
-                <Text style={styles.additionalInfoTitle}>Additional Information:</Text>
-                <Text style={styles.additionalInfoText}>{result.additionalInfo}</Text>
-              </View>
-            )}
-          </View>
+          <Text style={styles.resultText}>{result}</Text>
         </View>
       )}
 
@@ -189,54 +146,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 15,
     marginBottom: 20,
+    padding: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 5,
-    overflow: 'hidden',
   },
-  resultHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 20,
-    justifyContent: 'center',
-  },
-  resultIcon: {
-    fontSize: 24,
-    marginRight: 10,
-  },
-  resultTitle: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  resultContent: {
-    padding: 20,
-  },
-  resultReason: {
+  resultText: {
     fontSize: 16,
-    lineHeight: 24,
     color: '#2c3e50',
-    marginBottom: 15,
-  },
-  additionalInfo: {
-    backgroundColor: '#f8f9fa',
-    padding: 15,
-    borderRadius: 10,
-    borderLeftWidth: 4,
-    borderLeftColor: '#3498db',
-  },
-  additionalInfoTitle: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#2c3e50',
-    marginBottom: 8,
-  },
-  additionalInfoText: {
-    fontSize: 14,
-    lineHeight: 20,
-    color: '#34495e',
   },
   disclaimer: {
     backgroundColor: '#fff3cd',

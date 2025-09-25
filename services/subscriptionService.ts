@@ -1,4 +1,24 @@
-// Simple subscription service without complex dependencies
+// Simple in-memory subscription service for development
+const memoryStorage: { [key: string]: string } = {};
+
+const mockAsyncStorage = {
+  getItem: async (key: string): Promise<string | null> => {
+    return memoryStorage[key] || null;
+  },
+  setItem: async (key: string, value: string): Promise<void> => {
+    memoryStorage[key] = value;
+  },
+  removeItem: async (key: string): Promise<void> => {
+    delete memoryStorage[key];
+  },
+};
+
+// Subscription product IDs (same as before)
+export const SUBSCRIPTION_PRODUCTS = {
+  MONTHLY: 'com.grsdev.canieat.subscription.monthly',
+  ANNUAL: 'com.grsdev.canieat.subscription.annual',
+} as const;
+
 export interface SubscriptionProduct {
   productId: string;
   price: string;
@@ -11,16 +31,12 @@ export interface SubscriptionProduct {
 export interface SubscriptionStatus {
   isActive: boolean;
   productId: string | null;
-  expirationDate: string | null;
+  expirationDate: string | null; // ISO string
   isTrial: boolean;
-  trialEndDate: string | null;
+  trialEndDate: string | null; // ISO string
 }
 
-// Mock products for development
-export const SUBSCRIPTION_PRODUCTS = {
-  MONTHLY: 'com.grsdev.canieat.subscription.monthly',
-  ANNUAL: 'com.grsdev.canieat.subscription.annual',
-} as const;
+const SUBSCRIPTION_STORAGE_KEY = 'canieat_subscription_status';
 
 class SubscriptionService {
   private isInitialized = false;
@@ -31,18 +47,23 @@ class SubscriptionService {
     if (this.isInitialized) return;
 
     try {
-      // Load mock products for development
-      this.loadMockProducts();
-      
-      // Load subscription status from memory (simple approach)
-      this.loadSubscriptionStatus();
+      // Load cached subscription status
+      await this.loadSubscriptionStatus();
+
+      // Get available products (mock for development)
+      await this.loadProducts();
 
       this.isInitialized = true;
-      console.log('Subscription service initialized');
+      console.log('Subscription service initialized in development mode');
     } catch (error) {
       console.error('Failed to initialize subscription service:', error);
       this.isInitialized = true;
     }
+  }
+
+  private async loadProducts(): Promise<void> {
+    // For development, always load mock products
+    this.loadMockProducts();
   }
 
   private loadMockProducts(): void {
@@ -64,18 +85,27 @@ class SubscriptionService {
         type: 'subscription',
       },
     ];
+    console.log('Loaded mock subscription products for development');
   }
 
-  private loadSubscriptionStatus(): void {
-    // Simple in-memory storage for development
-    // In production, this would use secure storage
-    this.subscriptionStatus = {
-      isActive: false,
-      productId: null,
-      expirationDate: null,
-      isTrial: false,
-      trialEndDate: null,
-    };
+  private async loadSubscriptionStatus(): Promise<void> {
+    try {
+      const stored = await mockAsyncStorage.getItem(SUBSCRIPTION_STORAGE_KEY);
+      if (stored) {
+        this.subscriptionStatus = JSON.parse(stored);
+      }
+    } catch (error) {
+      console.error('Error loading subscription status:', error);
+    }
+  }
+
+  private async saveSubscriptionStatus(status: SubscriptionStatus): Promise<void> {
+    try {
+      this.subscriptionStatus = status;
+      await mockAsyncStorage.setItem(SUBSCRIPTION_STORAGE_KEY, JSON.stringify(status));
+    } catch (error) {
+      console.error('Error saving subscription status:', error);
+    }
   }
 
   async getProducts(): Promise<SubscriptionProduct[]> {
@@ -93,7 +123,6 @@ class SubscriptionService {
     try {
       // For development, simulate a successful purchase
       console.log('Development mode: Simulating successful purchase for', productId);
-      
       const newStatus: SubscriptionStatus = {
         isActive: true,
         productId: productId,
@@ -101,8 +130,7 @@ class SubscriptionService {
         isTrial: false,
         trialEndDate: null,
       };
-      
-      this.subscriptionStatus = newStatus;
+      await this.saveSubscriptionStatus(newStatus);
       return true;
     } catch (error) {
       console.error('Error purchasing subscription:', error);
@@ -134,7 +162,7 @@ class SubscriptionService {
     if (!this.isInitialized) {
       await this.initialize();
     }
-    
+    // Ensure a default status if not loaded
     if (!this.subscriptionStatus) {
       this.subscriptionStatus = {
         isActive: false,
@@ -144,8 +172,17 @@ class SubscriptionService {
         trialEndDate: null,
       };
     }
-    
     return this.subscriptionStatus;
+  }
+
+  getRemainingTrialDays(trialEndDate: string | null): number {
+    if (!trialEndDate) return 0;
+    const endDate = new Date(trialEndDate);
+    const now = new Date();
+    const diffTime = endDate.getTime() - now.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    return Math.max(0, diffDays);
   }
 
   async disconnect(): Promise<void> {
