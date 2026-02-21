@@ -1,0 +1,28 @@
+Hello App Store Review Team,
+
+Thank you for your feedback. CanIEat does not require login credentials or user accounts.
+
+To test the expired trial flow, please follow these simple steps:
+
+1. Open the CanIEat app (no login required)
+2. Tap the "About" tab at the bottom navigation
+3. Scroll to the bottom of the page
+4. You'll see a section labeled "🧪 App Store Review Test Mode"
+5. Tap the "⏰ Expire Trial Now" button
+6. Confirm the expiration in the dialog
+
+This will immediately expire the 7-day free trial, allowing you to test the subscription purchase flow.
+
+After expiring the trial:
+- Try accessing a premium feature (tap "Get Detailed Analysis" on any food search)
+- You'll see the subscription prompt with pricing
+- You can test purchasing using Apple's sandbox test accounts
+
+To reset the trial for retesting, simply tap the "🔄 Reset Trial (7 days)" button in the same test mode section.
+
+No test credentials are needed. The test mode controls are built into the app specifically for your review.
+
+If you have any questions, please let me know.
+
+Best regards,
+CanIEat Development Team

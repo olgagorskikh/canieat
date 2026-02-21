@@ -7,8 +7,8 @@
     "icon": "./assets/images/icon.png",
     "scheme": "canieat",
     "userInterfaceStyle": "automatic",
-    "newArchEnabled": true,
-    "description": "AI-powered food safety guide for pregnant women based on UK government medical guidelines",
+    "newArchEnabled": false,
+    "description": "CanIEat - Pregnancy Food Safety Guide\n\n🍓 FREE: Basic food safety guidance for pregnant women\n🔍 PREMIUM: Detailed AI-powered analysis with UK medical guidelines\n\n• FREE features: General food safety information\n• PREMIUM features: Detailed AI analysis, personalized recommendations, and comprehensive safety tips\n• 7-day free trial included\n• Based on UK government medical guidelines\n• Safe for pregnancy nutrition guidance",
     "keywords": [
       "pregnancy",
       "food safety",
@@ -16,22 +16,39 @@
       "nutrition",
       "AI",
       "medical advice",
-      "UK guidelines"
+      "UK guidelines",
+      "subscription",
+      "premium",
+      "free trial"
     ],
     "privacy": "public",
     "platforms": [
       "ios",
-      "android"
+      "android",
+      "web"
     ],
     "githubUrl": "https://github.com/olgagorskikh/canieat",
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.grsdev.canieat",
-      "buildNumber": "21",
+      "buildNumber": "22",
+      "jsEngine": "hermes",
       "infoPlist": {
         "NSHealthShareUsageDescription": "This app provides food safety guidance for pregnant women based on UK medical guidelines.",
         "NSHealthUpdateUsageDescription": "This app provides food safety guidance for pregnant women based on UK medical guidelines.",
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "UIRequiredDeviceCapabilities": ["arm64"],
+        "UISupportedInterfaceOrientations": [
+          "UIInterfaceOrientationPortrait",
+          "UIInterfaceOrientationLandscapeLeft",
+          "UIInterfaceOrientationLandscapeRight"
+        ],
+        "UISupportedInterfaceOrientations~ipad": [
+          "UIInterfaceOrientationPortrait",
+          "UIInterfaceOrientationPortraitUpsideDown",
+          "UIInterfaceOrientationLandscapeLeft",
+          "UIInterfaceOrientationLandscapeRight"
+        ]
       }
     },
     "android": {
@@ -58,7 +75,13 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-font"
+      "expo-font",
+      [
+        "react-native-iap",
+        {
+          "useStoreKit2": true
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
